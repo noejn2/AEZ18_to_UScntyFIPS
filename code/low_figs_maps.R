@@ -4,11 +4,11 @@ rm(list = ls())
 library(rgdal)
 library(tidyverse)
 
-USmap_AEZ18_df <- readRDS('output/USmap_AEZ18_df.rds')
+USmap_AEZ18_df <- readRDS('output/USmap_AEZ18_df_v11.rds')
 USmap_cnty_df <- readRDS('output/USmap_cnty_df.rds')
 USmap_st_df <- readRDS('output/USmap_st_df.rds')
 
-png(file = "output/low_figs/AEZ_in_states.png",
+png(file = "output/low_figs/AEZ_in_states_v11.png",
     width = 768,
     height = 458.88,
     units = "px")
@@ -29,7 +29,7 @@ ggplot() +
                size = .05)
 dev.off()
 
-png(file = "output/low_figs/counties_in_states.png",
+png(file = "output/low_figs/counties_in_states_v11.png",
     width = 768,
     height = 458.88,
     units = "px")
@@ -50,7 +50,7 @@ ggplot() +
                size = .05)
 dev.off()
 
-png(file = "output/low_figs/cnties_in_AEZ.png",
+png(file = "output/low_figs/cnties_in_AEZ_v11.png",
     width = 768,
     height = 458.88,
     units = "px")
@@ -73,16 +73,17 @@ dev.off()
 
 USmap_cnty_df_final <- USmap_cnty_df
 
-png(file = "output/low_figs/cnties_in_AEZ_final.png",
+png(file = "output/low_figs/cnties_in_AEZ_final_v11.png",
     width = 768,
     height = 458.88,
     units = "px")
+USmap_cnty_df_final$AEZ <- as.character(USmap_cnty_df_final$AEZ)
 ggplot() +
   geom_polygon(data = USmap_cnty_df_final,
                aes(x = long,
                    y = lat,
                    group = group,
-                   fill = aez),
+                   fill = AEZ),
                color = "grey",
                size = .1)
 dev.off()

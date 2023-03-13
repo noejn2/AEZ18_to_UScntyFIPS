@@ -4,6 +4,8 @@ rm(list = ls())
 
 library(tidyverse)
 library(rgdal)
+library(conflicted)
+conflict_prefer("select", "dplyr")
 
 # The shapefiles
 
@@ -13,7 +15,7 @@ USmap_cnty <- readOGR(dsn = 'assets/3109_county',
 USmap_st <- readOGR(dsn = 'assets/49_state',
                     layer = 'USmap_state')
 
-USmap_AEZ18 <- readOGR(dsn = 'output/USmap_AEZ18',
+USmap_AEZ18 <- readOGR(dsn = 'output/USmap_AEZ18_v11',
                     layer = 'USmap_AEZ18')
 
 # Creating and saving the tidy files
@@ -25,9 +27,9 @@ USmap_cnty@data <- USmap_cnty@data %>%
   rename(fips = ANSI_ST_CO) %>%
   mutate(fips = as.character(as.numeric(fips)))
 
-AEZ18_to_UScnty_fips <- readRDS(file = 'output/AEZ18_to_UScnty_fips.rds')
+AEZ18_to_UScnty_fips <- readRDS(file = 'output/AEZ18_to_UScnty_fips_v11.rds')
 AEZ18_to_UScnty_fips <- AEZ18_to_UScnty_fips %>%
-  select(fips, aez) %>%
+  select(fips, AEZ) %>%
   mutate(fips = as.character(fips))
 
 USmap_cnty@data <- left_join(AEZ18_to_UScnty_fips,
@@ -55,13 +57,13 @@ saveRDS(USmap_st_df, file = 'output/USmap_st_df.rds')
 
 #AEZ18
 USmap_AEZ18@data <- USmap_AEZ18@data %>%
-  select(aez) 
+  select(AEZ) 
   
-USmap_AEZ18@data$id <- as.character(0:(length(USmap_AEZ18@data$aez) - 1))
+USmap_AEZ18@data$id <- as.character(0:(length(USmap_AEZ18@data$AEZ) - 1))
 
 USmap_AEZ18_df <- broom::tidy(USmap_AEZ18)
 USmap_AEZ18_df <- left_join(USmap_AEZ18_df,
                             USmap_AEZ18@data,
                             by = "id")
-saveRDS(USmap_AEZ18_df, file = 'output/USmap_AEZ18_df.rds')
+saveRDS(USmap_AEZ18_df, file = 'output/USmap_AEZ18_df_v11.rds')
 #end

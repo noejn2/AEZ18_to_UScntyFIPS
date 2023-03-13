@@ -1,18 +1,20 @@
 rm(list = ls())
 
 # Script creates continental U.S. with the AEZ18 boundaries
+# Shifting from GTAP version 10 to GTAP version 11
 
 library(tidyverse)
+library(raster)
 library(rgdal)
 
 # Shapefile with all of the AEZ regions in the world
-AEZ_map <- readOGR(dsn = 'assets/GTAPAEZ_v10',
-                   layer = 'GTAPv10_aez')
-
+AEZ_map <- readOGR(dsn = 'assets/GTAPAEZ_v11',
+                   layer = 'GTAPv11_aez')
+AEZ_map <- AEZ_map[AEZ_map$REG == "usa",]
 # Dissolving all of the state boundaries from US states shapefile
 USmap_st <- readOGR(dsn = 'assets/49_state',
                     layer = 'USmap_state')
-USmap_st <- aggregate(USmap_st, dissolve = TRUE)
+USmap_st <- raster::aggregate(USmap_st, dissolve = TRUE)
 
 # Intersecting USmap_st with AEZ_regions (countries) to create
 # a shapefile that keeps lakes within the continental U.S.
@@ -39,10 +41,10 @@ if(!file.exists('output/USmap_lakes/USmap_lakes.shp')) {
 USmap_AEZ18 <- raster::intersect(USmap_st, AEZ_map)
 tmap::qtm(USmap_AEZ18)
 
-out_dir <-'output/USmap_AEZ18'
+out_dir <-'output/USmap_AEZ18_v11'
 dir.create(path = out_dir,
            showWarnings = TRUE)
-if(!file.exists('output/USmap_AEZ18/USmap_AEZ18.shp')) {
+if(!file.exists('output/USmap_AEZ18/USmap_AEZ18_v11.shp')) {
   writeOGR(USmap_AEZ18, 
            dsn = out_dir,
            layer = 'USmap_AEZ18',
