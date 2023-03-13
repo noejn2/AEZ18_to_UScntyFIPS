@@ -1,6 +1,12 @@
 ## Description of the repository
 
+**Note (GTAP version 11)**: GTAP version 11 arrived, and Nelson Villoria (KSU) and Uris Baldos (Purdue) provided us with the newest AEZ shapefile. When we re-ran the analysis for the version 11, we found some noticeable differences that we show at the end of this readme. We are unable to determine if the differences are driven by changes in (1) data, (2) methodology, or (3) actual climate change.
+
 The problem I solve in this repository is how to identify which U.S. counties belong to each Agro-ecological Zone [AEZ](https://www.ifpri.org/publication/agro-ecological-zones-africa). The importance of this problem relies on academic and research spheres for the most part.
+
+If using this shapefile, please cite:
+
+Nava, N J, J Beckman, and M Ivanic. 2023. "Estimating the Market Implications from Climate-induced Corn and Soybean Yield Changes for the U.S." *Forthcoming as Economics Research Report*
 
 The following is a quick description of the codes:
 
@@ -24,4 +30,10 @@ Above I showed you how the AEZ look across the U.S. states. Right below, I show 
 
 The first most noticeable complications are the NA. My method seems to left-out a handful of counties. But most importantly, the method seems to be good at classifying the counties East of the 100th Meridian. The most significant differences are in the Northern part of New England. In fact, the differences seem to arise from using the intersection of points to polygons. This problem is more noticeable on the Western part of the US where where there is a lot more of AEZ diversity.
 
-![counties_in_AEZ_final](output/low_figs/cnties_in_AEZ_final.png)
+![counties_in_AEZ_final](output/low_figs/cnties_in_AEZ_final_v11.png)
+
+**Changes in AEZs from moving from GTAP v10 to v11**
+
+Here, left map is version 10 and right map is version 11. You can notice that in almost any part of the map, we can see changes in the AEZ that will indeed affect how counties are mapped into the AEZ.
+
+![counties_in_AEZ_final](output/low_figs/aezus_compare.png)
